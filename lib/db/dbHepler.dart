@@ -22,7 +22,7 @@ class DbHelper {
   static Database _db;
 
   Future<Database> get db async {
-    if (_db = null) {
+    if (_db == null) {
       _db = await initiliazeDb();
     }
 
@@ -45,9 +45,14 @@ class DbHelper {
   }
 
   Future<int> insert(Product product) async {
-    Database db = await this.db;
-    var result = await db.insert(tblProduct, product.toMap());
+    var result;
+    try {
+      Database db = await this.db;
 
+      result = await db.insert(tblProduct, product.toMap());
+    } catch (e) {
+      print(e);
+    }
     return result;
   }
 
@@ -60,21 +65,15 @@ class DbHelper {
 
   Future<int> delete(int id) async {
     Database db = await this.db;
-  // her ikisi de ayni isi yapar.
+    // her ikisi de ayni isi yapar.
     //var result = await db.delete(tblProduct,  where: "$colId =? ", whereArgs: [id]);
     var result = await db.rawDelete("Delete from $tblProduct where $colId=$id");
     return result;
   }
 
-
   Future<List> getProducts() async {
-    
     Database db = await this.db;
     var result = await db.rawQuery("Select * from $tblProduct");
     return result;
   }
-
-
-
-
 } //end of class;

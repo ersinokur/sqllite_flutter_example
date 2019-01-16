@@ -34,11 +34,11 @@ class Product {
   Map<String, dynamic> toMap() {
     var map = Map<String, dynamic>();
 
-    map["name"] = _name;
-    map["decstiption"] = _description;
-    map["price"] = _price;
+    map["Name"] = _name;
+    map["Description"] = _description; //description OLACAK
+    map["Price"] = _price;
     if (_id != null) {
-      map["id"] = _id;
+      map["Id"] = _id;
     }
 
     return map;
@@ -46,10 +46,10 @@ class Product {
 
 Product.fromObject (dynamic o) {
 
-this._id = o["id"];
-this._name = o["name"];
-this._description= o["description"];
-this._price  = o["price"];
+this._id = o["Id"];
+this._name = o["Name"];
+this._description= o["Description"];
+this._price  = double.tryParse(o["Price"].toString()) ;
 
 }
 

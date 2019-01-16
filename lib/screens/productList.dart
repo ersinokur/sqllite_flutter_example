@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sql_lite_project/db/dbHepler.dart';
 import 'package:sql_lite_project/models/product.dart';
+import 'package:sql_lite_project/screens/productAdd.dart';
+import 'package:sql_lite_project/screens/productDetail.dart';
 
 class ProdutList extends StatefulWidget {
   _ProdutListState createState() => _ProdutListState();
@@ -20,6 +22,13 @@ class _ProdutListState extends State<ProdutList> {
     }
     return Scaffold(
       body: productListItems(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          goToProductAdd();
+        },
+        tooltip: "add new product",
+        child: Icon(Icons.add),
+      ),
     );
   }
 
@@ -28,16 +37,19 @@ class _ProdutListState extends State<ProdutList> {
       itemCount: count,
       itemBuilder: (BuildContext context, int position) {
         return Card(
-          color: Colors.amberAccent,
+          color: Colors.purple[100],
           elevation: 2,
-          child: ListTile( //
+          child: ListTile(
+            //
             leading: CircleAvatar(
-              backgroundColor: Colors.green,
-              child: Text(this.products[position].name.substring(0,1)),
+              backgroundColor: Colors.yellowAccent,
+              child: Text(this.products[position].name.substring(0, 1)),
             ),
             title: Text(this.products[position].name),
             subtitle: Text(this.products[position].description),
-            onTap: (){},
+            onTap: () {
+              goToDetail(this.products[position]);
+            },
           ),
         );
       },
@@ -63,5 +75,25 @@ class _ProdutListState extends State<ProdutList> {
         });
       });
     });
+  }
+
+  void goToDetail(Product product) async {
+    bool result = await Navigator.push(context,
+        MaterialPageRoute(builder: (context) => ProductDetail(product)));
+    if (result != null) {
+      if (result) {
+        getData();
+      }
+    }
+  }
+
+  void goToProductAdd() async {
+    bool result = await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => ProductAdd()));
+    if (result != null) {
+      if (result) {
+        getData();
+      }
+    }
   }
 }
